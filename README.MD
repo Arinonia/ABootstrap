@@ -10,7 +10,7 @@
 
 ![Result](screenshots/img.png?raw=true "Result")
 
-##Example
+## Example
 
 [Bootstrap-Example repositories](https://github.com/Arinonia/Bootstrap-Example)
 
