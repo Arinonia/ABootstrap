@@ -22,11 +22,14 @@ public class Updater {
     private boolean fileDeleter = false;
     private boolean isInMaintenance = false;
 
+    /**
+     * Start downloading
+     */
     public void start() {
-        int lenght = this.needToDownload.size();
+        int length = this.needToDownload.size();
 
-        for (int i = 0; i < lenght; i++) {
-            DownloadManager downloadManager = this.needToDownload.poll();
+        for (int i = 0; i < length; i++) {
+            final DownloadManager downloadManager = this.needToDownload.poll();
 
             if (!downloadManager.getFile().exists()) {
                 if (!downloadManager.getFile().mkdirs()) {
@@ -44,8 +47,14 @@ public class Updater {
         }
     }
 
+    /**
+     *
+     * @param jsonContent json who will be parsed
+     * @param job DownloadJob assigned to your json
+     * @param folder The folder where your DownloadJob will be downloaded
+     */
     private void jsonDeserialization(final String jsonContent, DownloadJob job, File folder) {
-        Data data = GSON.fromJson(jsonContent, Data.class);
+        final Data data = GSON.fromJson(jsonContent, Data.class);
 
         System.out.println("Maintenance: " + data.getMaintenance().isMaintenance());
         System.out.println("Maintenance message: " + data.getMaintenance().getMessage());
@@ -77,9 +86,9 @@ public class Updater {
         }
 
         for (final String ignore : data.getIgnoredFiles()) {
-            File file = new File(folder, ignore);//TODO check recursively
+            final File file = new File(folder, ignore);
             if (file.isDirectory()) {
-                ArrayList<File> files = this.listFiles(file);
+                final ArrayList<File> files = this.listFiles(file);
                 for (final File f : files) {
                     this.ignoredFiles.add(f.getAbsolutePath());
                 }
@@ -100,6 +109,11 @@ public class Updater {
         }
     }
 
+    /**
+     *
+     * @param theUrl your url
+     * @return the content at this URL
+     */
     private String getContentURL(final String theUrl) {
         final StringBuilder content = new StringBuilder();
 
@@ -130,9 +144,14 @@ public class Updater {
         return content.toString();
     }
 
+    /**
+     *
+     * @param folder folder who be listed
+     * @return all file (recursively) in the folder passed in parameter
+     */
     private ArrayList<File> listFiles(final File folder) {
-        File[] files = folder.listFiles();
-        ArrayList<File> list = new ArrayList<>();
+        final File[] files = folder.listFiles();
+        final ArrayList<File> list = new ArrayList<>();
 
         if (files == null) {
             return list;
@@ -159,7 +178,7 @@ public class Updater {
 
 
     private void checkingFiles(final File folder) {
-        ArrayList<File> files = this.listFiles(folder);
+        final ArrayList<File> files = this.listFiles(folder);
 
         for (final File file : files) {
             if (!this.isIgnored(file)) {
